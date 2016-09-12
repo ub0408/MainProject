@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+ 		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+ 		<property name="url" value="jdbc:oracle:thin:@localhost:1521:XE"/>
+ 		<property name="username" value="escapemaster"/>
+ 		<property name="password" value="escapemaster"/>
+ 	</bean>
+
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	<bean id="branchDAO" class="mainPage.branchManage.dao.BranchDAOImpl">
+		<property name="jdbcTemplate" ref="jdbcTemplate"></property>
+	</bean>
+
+	<bean name="/branchMain.branchPage" class="branchPage.controller.BranchPageController">
+		<property name="branchDAO" ref="branchDAO"></property>
+	</bean> 
+	
+	<bean name="/branchInsert.branchPage" class="mainPage.branchManage.controller.BranchInsertController">
+		<property name="branchDAO"  ref="branchDAO"/>
+		<property name="commandClass" value="mainPage.branchManage.dto.BranchDTO"/>
+	    <property name="commandName" value="branchCmd"/>	
+	</bean>
+	
+
+</beans>
